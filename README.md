@@ -51,25 +51,59 @@
 
 ---
 
-## 安装
+## 安装与依赖同步
+
+### 1. 克隆仓库
 
 ```bash
-# 克隆仓库
 git clone https://github.com/zhootoo/DamaiTicketGrab.git
 cd DamaiTicketGrab
+```
 
-# 使用 uv 安装依赖（推荐）
+### 2. 一键同步依赖（推荐 uv sync）
+
+本项目使用 [`uv`](https://docs.astral.sh/uv/) 管理依赖：依赖清单声明在 `pyproject.toml`。克隆后**只需一条命令**即可把项目所需的全部运行时依赖同步到位：
+
+```bash
 uv sync
+```
 
-# 或者使用 pip
+`uv sync` 会自动完成以下工作：
+
+- 在当前目录创建（或复用）虚拟环境 `.venv`，**无需手动 `python -m venv` 或激活环境**；
+- 依据 `pyproject.toml` 解析并安装全部依赖（`uiautomator2` 及其子依赖 `adbutils`、`lxml`、`pillow`、`requests` 等）；
+- 若存在 `uv.lock` 则按锁定的精确版本安装；不存在时自动解析并生成，保证后续安装结果可复现；
+- 虚拟环境目录 `.venv` 已在 `.gitignore` 中排除，不会污染仓库。
+
+如果本机尚未安装 uv，可先安装：
+
+```bash
+# Windows (PowerShell)
+powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
+
+# 或通过 pip
+pip install uv
+```
+
+> 后续运行脚本用 `uv run python main.py`，uv 会自动使用 `uv sync` 创建好的环境，**同样无需手动激活虚拟环境**。
+
+### 3. 使用 pip 的替代方案（不推荐）
+
+若不想使用 uv，也可以用 pip 安装：
+
+```bash
 pip install uiautomator2
 ```
 
-确认设备连接正常：
+但没有锁文件约束，安装到的版本可能与开发时不一致。
+
+### 4. 确认设备连接
 
 ```bash
 adb devices
 ```
+
+列表中能看到你的设备序列号即表示连接正常。
 
 ---
 
@@ -116,6 +150,8 @@ P2 = [541, 1506]
 uv run python main.py
 ```
 
+> 首次运行前请确保已执行过 `uv sync`（同步依赖）。`uv run` 会自动使用 `.venv` 虚拟环境，无需手动激活。
+
 运行后：
 
 1. 脚本自动连接设备并打印设备名。
@@ -141,7 +177,6 @@ DamaiTicketGrab/
 ├── config.toml      # 时间与坐标配置
 ├── pyproject.toml   # 项目元数据与依赖
 ├── run.bat          # Windows 一键运行脚本
-├── uv.lock          # uv 依赖锁文件
 └── README.md
 ```
 
