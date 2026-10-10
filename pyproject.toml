@@ -1,0 +1,10 @@
+[project]
+name = "damai-android-clicker"
+version = "0.1.0"
+requires-python = ">=3.11"
+dependencies = [
+    "uiautomator2>=3.0.0",
+]
+
+[project.scripts]
+clicker = "main:main"

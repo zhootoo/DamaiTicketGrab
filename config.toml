@@ -1,0 +1,16 @@
+[timing]
+# 目标点击开始时间，格式: "YYYY-MM-DD HH:MM:SS"
+T1 = "2026-07-09 20:00:00"
+
+# Phase 1 持续时长（秒）：只点击 P1 的时间
+T2 = 4
+
+# 提前量（秒）：在 T1 前多少秒开始点击，用于补偿 uiautomator2 的延迟
+lead_seconds = 0.85
+
+[coordinates]
+# P1 坐标 [x, y]，Phase 1 期间只点 P1
+P1 = [845, 2299]
+
+# P2 坐标 [x, y]，Phase 2 期间与 P1 轮流点击
+P2 = [541, 1506]
